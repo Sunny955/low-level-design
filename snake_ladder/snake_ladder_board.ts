@@ -5,13 +5,13 @@ export class SnakeAndLadderBoard {
     private size: number;
     private snakes: Snake[];
     private ladders: Ladder[];
-    private playerPieces: Map<string, number>;
+    private playerPieces: { [key: string]: number };
 
     constructor(size: number) {
         this.size = size;
         this.snakes = [];
         this.ladders = [];
-        this.playerPieces = new Map<string, number>();
+        this.playerPieces = {};
     }
 
     getSize(): number {
@@ -34,11 +34,11 @@ export class SnakeAndLadderBoard {
         this.ladders = ladders;
     }
 
-    getPlayerPieces(): Map<string, number> {
+    getPlayerPieces(): { [key: string]: number } {
         return this.playerPieces;
     }
 
-    setPlayerPieces(playerPieces: Map<string, number>): void {
+    setPlayerPieces(playerPieces: { [key: string]: number }): void {
         this.playerPieces = playerPieces;
     }
 }

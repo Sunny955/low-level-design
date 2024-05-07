@@ -44,8 +44,8 @@ class SnakeLadderGame {
     setPlayers(players: Player[]): void {
         this.players = players;
         this.initialNumberOfPlayers = players.length;
-        const playerPieces = new Map<string, number>();
-        players.forEach(player => playerPieces.set(player.getId(), 0));
+        const playerPieces: { [key: string]: number } = {};
+        players.forEach(player => playerPieces[player.getId()] = 0);
         this.snakeAndLadderBoard.setPlayerPieces(playerPieces);
     }
 
@@ -79,7 +79,7 @@ class SnakeLadderGame {
     }
 
     private movePlayer(player: Player, positions: number): void {
-        let oldPosition = this.snakeAndLadderBoard.getPlayerPieces().get(player.getId())!;
+        let oldPosition = this.snakeAndLadderBoard.getPlayerPieces()[player.getId()] || 0;
         let newPosition = oldPosition + positions;
 
         if (newPosition > this.snakeAndLadderBoard.getSize()) {
@@ -88,7 +88,7 @@ class SnakeLadderGame {
             newPosition = this.getNewPositionAfterGoingThroughSnakesAndLadders(newPosition);
         }
 
-        this.snakeAndLadderBoard.getPlayerPieces().set(player.getId(), newPosition);
+        this.snakeAndLadderBoard.getPlayerPieces()[player.getId()] = newPosition;
 
         console.log(`${player.getName()} rolled a ${positions} and moved from ${oldPosition} to ${newPosition}`);
     }
@@ -102,7 +102,7 @@ class SnakeLadderGame {
     }
 
     private hasPlayerWon(player: Player): boolean {
-        const playerPosition = this.snakeAndLadderBoard.getPlayerPieces().get(player.getId())!;
+        const playerPosition = this.snakeAndLadderBoard.getPlayerPieces()[player.getId()] || 0;
         const winningPosition = this.snakeAndLadderBoard.getSize();
         return playerPosition === winningPosition;
     }
@@ -118,7 +118,7 @@ class SnakeLadderGame {
             this.movePlayer(currentPlayer, totalDiceValue);
             if (this.hasPlayerWon(currentPlayer)) {
                 console.log(`${currentPlayer.getName()} wins the game`);
-                this.snakeAndLadderBoard.getPlayerPieces().delete(currentPlayer.getId());
+                delete this.snakeAndLadderBoard.getPlayerPieces()[currentPlayer.getId()];
             } else {
                 this.players.push(currentPlayer);
             }
